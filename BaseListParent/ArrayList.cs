@@ -1,4 +1,4 @@
-﻿
+
 public class ArrayList : BaseList
 {
     //public int count = 0;
@@ -17,7 +17,7 @@ public class ArrayList : BaseList
         set
         {
             if (i >= count)
-                Expand();
+                return;
             array[i] = value;
 
         }
