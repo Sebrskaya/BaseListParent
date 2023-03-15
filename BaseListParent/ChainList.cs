@@ -1,7 +1,7 @@
-﻿
-public class ChainList 
+
+public class ChainList : BaseList
 {
-    public class Node
+    private class Node
     {
         public int Data { set; get; }
         public Node Next { set; get; }
@@ -12,8 +12,8 @@ public class ChainList
         }
 
     }
-    public class Methods : BaseList
-    {
+    //public class Methods 
+    //{
         Node head = null;
         //public int count = 0;
 
@@ -29,13 +29,13 @@ public class ChainList
 
             set
             {
-                if (i >= count)
+                if (i < count)
                 {
                     GetNode(i).Data = value;
                 }
             }
         }
-        public Node GetNode(int pos)
+        private Node GetNode(int pos)
         {
             Node pred = head;
             if (pred == null)
@@ -131,23 +131,27 @@ public class ChainList
         public override void Sort()//bubble
         {
 
-            for (int i = 0; i < count; i++)
-                for (int j = 0; j < count-i;j++) 
+            for (int i = 0; i < count-1; i++)
+        {
+            for (int j = 0; j < count - i; j++)
+            {
+                Node current = GetNode(j);
+                if (current != null && current.Next != null && current.Data > current.Next.Data)
                 {
-                    Node current = GetNode(j);
-                    if (current != null && current.Next != null && current.Data > current.Next.Data)
-                    {
-                        int temp = current.Data;
-                        current.Data = current.Next.Data;
-                        current.Next.Data = temp;
-                    }
+                    int temp = current.Data;
+                    current.Data = current.Next.Data;
+                    current.Next.Data = temp;
                 }
+            }
+            break;
+        }
+                
         }
         public override BaseList Clone()
         {
-            ChainList.Methods list= new ChainList.Methods();
+            ChainList list = new ChainList();
             list.Assign(this);
             return list;
         }
-    }
+    //}
 }
