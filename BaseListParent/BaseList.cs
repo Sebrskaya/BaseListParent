@@ -1,10 +1,10 @@
-﻿
+
 public abstract class BaseList
 {
     protected int count = 0;
-    public int getCount 
-    { 
-        get { return count; } 
+    public int Count
+    {
+        get { return count; }
     }//дописать
     public abstract void Add(int a);
     public abstract void Delete(int pos);
@@ -18,7 +18,7 @@ public abstract class BaseList
     public void Assign(BaseList sourceList)//A.Assign(B) => A превращается в В
     {
         Clear();
-        for (int i = 0; i < sourceList.getCount; i++)
+        for (int i = 0; i < sourceList.Count; i++)
         {
             Add(sourceList[i]);
         }
@@ -37,13 +37,22 @@ public abstract class BaseList
             for (int i = current + 1; i < count; i++)
                 if (this[minIndex] > this[i])
                     minIndex = i;
-            
-                
+
+
 
             int buf = this[current];
             this[current] = this[minIndex];
             this[minIndex] = buf;
         }
     }
+    public bool EqualsTo(BaseList otherList)
+    {
+        if (this.Count != otherList.Count)
+            return false;
+        for (int i = 0; i < otherList.Count; i++)
+            if (this[i] != otherList[i])
+                return false;
 
+        return true;
+    }
 }
