@@ -1,17 +1,17 @@
-
-public class ArrayList : BaseList
+using System;
+public class ArrayList<T> : BaseList<T> where T : IComparable
 {
     //public int count = 0;
-    int[] array = null;
+    T[] array = null;
 
-    public override int this[int i]
+    public override T this[int i]
     {
         get
         {
             if (i < count & i >= 0)
                 return array[i];
             else
-                return 0;
+                return throw new EWrongIndex("Косяк") ;
         }
 
         set
@@ -27,12 +27,12 @@ public class ArrayList : BaseList
     {
         if (array == null)
         {
-            array = new int[1];
+            array = new T[1];
             return;
         }
         if (count < array.Length)
             return;
-        int[] buf = new int[array.Length * 2];
+        T[] buf = new T[array.Length * 2];
         Array.Copy(array, 0, buf, 0, count);
         array = buf;
     }
@@ -45,13 +45,13 @@ public class ArrayList : BaseList
             Console.Write(array[i] + " ");
         Console.Write("\n");
     }
-    public override void Add(int a)
+    public override void Add(T a)
     {
         Expand();
         array[count] = a;
         count++;
     }
-    public override void Insert(int pos, int a)
+    public override void Insert(int pos, T a)
     {
         if ((array == null & pos == 0) | pos == count)// Если массив пустой или позиция на следущей от последней ячейки, то Add()
         {
@@ -93,9 +93,9 @@ public class ArrayList : BaseList
     {
         count = 0;
     }
-    public override BaseList Clone()
+    public override BaseList<T> Clone()
     {
-        ArrayList list = new ArrayList();
+        ArrayList<T> list = new ArrayList<T>();
         list.Assign(this);
         return list;
     }
