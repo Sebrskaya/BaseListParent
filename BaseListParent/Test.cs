@@ -1,7 +1,7 @@
-
-BaseList ChainList = new ChainList();
-BaseList ArrayList = new ArrayList();
-BaseList Brat = new ArrayList();
+using System;
+BaseList<int> ChainList = new ChainList<int>();
+BaseList<int> ArrayList = new ArrayList<int>();
+BaseList<int> Brat = new ArrayList<int>();
 Random random = new Random();
 
 for (int i = 0; i < 10000; i++)
@@ -36,7 +36,7 @@ for (int i = 0; i < 10000; i++)
             ChainList[pos] = data;
             ArrayList[pos] = data;
             break;
-        
+
         case 5:
             ChainList.Sort();
             ArrayList.Sort();
@@ -48,10 +48,10 @@ for (int i = 0; i < 10000; i++)
     }
     //Check Assign \/
     ArrayList.Assign(ChainList);
-    if (! ArrayList.EqualsTo(ChainList))
+    if (!ArrayList.EqualsTo(ChainList))
         Console.WriteLine("Assign не работает");
     ChainList.Assign(ArrayList);
-    if (! ChainList.EqualsTo(ArrayList))
+    if (!ChainList.EqualsTo(ArrayList))
         Console.WriteLine("Assign не работает");
 
     //Check Clone
