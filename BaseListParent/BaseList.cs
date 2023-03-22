@@ -1,5 +1,5 @@
-
-public abstract class BaseList<T>: IComparable
+using System;
+public abstract class BaseList<T> where T : IComparable
 {
     protected int count = 0;
     public int Count
@@ -11,16 +11,16 @@ public abstract class BaseList<T>: IComparable
     public abstract void Insert(int pos, T a);
     public abstract void Clear();
 
-    int CompareTo(BaseList<T> other)
+    /*int CompareTo(BaseList<T> other)
     {
-        if(count== other.Count)
+        if (count == other.Count)
             return 0;
         if (count > other.Count)
             return 1;
         if (count < other.Count)
             return -1;
     }
-
+    */
     public abstract int Lenght();
     public abstract T this[int i]
     { set; get; }
@@ -45,7 +45,7 @@ public abstract class BaseList<T>: IComparable
             int minIndex = current;
 
             for (int i = current + 1; i < count; i++)
-                if (this[minIndex] > this[i])
+                if (this[minIndex].CompareTo(this[i]) == 1)
                     minIndex = i;
 
 
@@ -60,14 +60,9 @@ public abstract class BaseList<T>: IComparable
         if (this.Count != otherList.Count)
             return false;
         for (int i = 0; i < otherList.Count; i++)
-            if (this[i] != otherList[i])
+            if (this[i].CompareTo(otherList[i]) != 1)
                 return false;
 
         return true;
     }
-}
-
-public interface IComparable<T>
-{
-    int CompareTo(BaseList<T> list);
 }
