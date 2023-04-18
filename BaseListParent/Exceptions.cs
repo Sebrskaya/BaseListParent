@@ -1,7 +1,7 @@
 using System;
 
-public class EWrongIndex: Exception
+class EWrongIndex : Exception
 {
-        public EWrongIndex(string msg) : base(msg) 
-        { }
+    public EWrongIndex(string message) : base(message)
+    { }
 }
