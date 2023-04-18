@@ -1,4 +1,54 @@
 using System;
+/*BaseList<string> arrayList = new ArrayList<string>();
+BaseList<string> arrayList2 = new ArrayList<string>();
+BaseList<int> arrayList3 = new ArrayList<int>();
+BaseList<int> chainList = new ChainList<int>();
+*/
+
+/*arrayList2.Add(1);
+arrayList2.Add(5);
+arrayList2.Add(10);
+arrayList2.Add(11);
+arrayList2.Add(5);*/
+
+/*arrayList2.Add("e1");
+arrayList2.Add("E2");
+arrayList2.Add("B3");
+arrayList2.Add("M4");
+arrayList2.Add("S5");*/
+
+/*arrayList.Add(1);
+arrayList.Add(5);
+arrayList.Add(10);
+arrayList.Add(11);
+arrayList.Add(5);*/
+
+
+/*chainList.Add(0);
+chainList.Add(3);
+chainList.Add(991);
+chainList.Add(37);
+chainList.Add(4);
+
+chainList.Sort();
+chainList.Print();*/
+
+/*arrayList.Add("Turing");
+arrayList.Add("Elon");
+arrayList.Add("Bill");
+arrayList.Add("Mark");
+arrayList.Add("Steve");*/
+
+//arrayList.Sort();
+
+//arrayList2.Print();
+
+//arrayList3 = arrayList + arrayList2;
+
+//Console.WriteLine(arrayList != arrayList2);
+
+//arrayList3.Print();
+
 public abstract class BaseList<T> where T : IComparable
 {
     protected int count = 0;
@@ -63,6 +113,39 @@ public abstract class BaseList<T> where T : IComparable
             if (this[i].CompareTo(otherList[i]) != 1)
                 return false;
 
+        return true;
+    }
+    public void CheckIndex(int index, int flag = 0)
+    {
+        // для случаев, когда вызывается не метод Insert(int index, int data)
+        if (flag != 1 && (index >= count || count == 0)) throw new EWrongIndex("Индекс вне диапазона");
+
+        // для случаев, когда вызываается метод Insert(int index, int data)
+        if (flag == 1 && index > count) throw new EWrongIndex("Индекс вне диапазона");
+    }
+    public int GetCount { get { return count; } } // количество элементов
+    public static BaseList<T> operator +(BaseList<T> list1, BaseList<T> list2)
+    {
+        BaseList<T> newList = list1.Clone(); // а может проблема в Assign? Возможно следует убрать Clear()?
+                                             // просто почему мы не можем применить Clone() и с помощью Asssing(BaseList sourceList) дописать недостающие элементы?
+        for (int i = 0; i < list2.GetCount; i++)
+        {
+            newList.Add(list2[i]);
+        }
+        return newList;
+    }
+
+    public static bool operator ==(BaseList<T> list1, BaseList<T> list2)
+    {
+        if (list1.EqualsTo(list2)) 
+            return true;
+        return false;
+    }
+
+    public static bool operator !=(BaseList<T> list1, BaseList<T> list2)
+    {
+        if (list1.EqualsTo(list2)) 
+            return false;
         return true;
     }
 }
