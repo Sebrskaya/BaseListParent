@@ -1,25 +1,22 @@
 using System;
+using System.Reflection;
+
 public class ArrayList<T> : BaseList<T> where T : IComparable
 {
     //public int count = 0;
-    T[] array = null;
+    private T[] array = null;
 
     public override T this[int i]
     {
         get
         {
-            if (i < count & i >= 0)
-                return array[i];
-            else
-                return throw new EWrongIndex("Косяк") ;
+            CheckIndex(i);
+            return array[i];
         }
-
         set
         {
-            if (i >= count)
-                return;
+            CheckIndex(i);
             array[i] = value;
-
         }
     }
 
@@ -53,6 +50,8 @@ public class ArrayList<T> : BaseList<T> where T : IComparable
     }
     public override void Insert(int pos, T a)
     {
+        CheckIndex(pos, 1);
+
         if ((array == null & pos == 0) | pos == count)// Если массив пустой или позиция на следущей от последней ячейки, то Add()
         {
             Add(a);
