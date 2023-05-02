@@ -60,17 +60,6 @@ public abstract class BaseList<T> where T : IComparable
     public abstract void Delete(int pos);
     public abstract void Insert(int pos, T a);
     public abstract void Clear();
-
-    /*int CompareTo(BaseList<T> other)
-    {
-        if (count == other.Count)
-            return 0;
-        if (count > other.Count)
-            return 1;
-        if (count < other.Count)
-            return -1;
-    }
-    */
     public abstract int Lenght();
     public abstract T this[int i]
     { set; get; }
@@ -110,7 +99,7 @@ public abstract class BaseList<T> where T : IComparable
         if (this.Count != otherList.Count)
             return false;
         for (int i = 0; i < otherList.Count; i++)
-            if (this[i].CompareTo(otherList[i]) != 1)
+            if (this[i].CompareTo(otherList[i]) != 0)
                 return false;
 
         return true;
@@ -135,16 +124,38 @@ public abstract class BaseList<T> where T : IComparable
         return newList;
     }
 
+    public static BaseList<T> operator -(BaseList<T> list1, BaseList<T> list2)
+    {
+        BaseList<T> newList = list1.Clone();
+        newList.Clear();
+                                             
+        for (int i = 0; i < list2.GetCount; i++)
+        {
+            int count = 0;
+            for(int j = 0; j < list2.GetCount; j++)
+            {
+                if (list1[i].CompareTo(list2[j]) == 0)
+                {
+                    count++;
+                    break;
+                }
+            }
+            if (count == 0)
+                newList.Add(list1[i]);
+        }
+        return newList;
+    }
+
     public static bool operator ==(BaseList<T> list1, BaseList<T> list2)
     {
-        if (list1.EqualsTo(list2)) 
+        if (list1.EqualsTo(list2))
             return true;
         return false;
     }
 
     public static bool operator !=(BaseList<T> list1, BaseList<T> list2)
     {
-        if (list1.EqualsTo(list2)) 
+        if (list1.EqualsTo(list2))
             return false;
         return true;
     }
