@@ -1,162 +1,254 @@
-using System;
-/*BaseList<string> arrayList = new ArrayList<string>();
-BaseList<string> arrayList2 = new ArrayList<string>();
-BaseList<int> arrayList3 = new ArrayList<int>();
-BaseList<int> chainList = new ChainList<int>();
-*/
+using System.Collections.Generic;
 
-/*arrayList2.Add(1);
-arrayList2.Add(5);
-arrayList2.Add(10);
-arrayList2.Add(11);
-arrayList2.Add(5);*/
-
-/*arrayList2.Add("e1");
-arrayList2.Add("E2");
-arrayList2.Add("B3");
-arrayList2.Add("M4");
-arrayList2.Add("S5");*/
-
-/*arrayList.Add(1);
-arrayList.Add(5);
-arrayList.Add(10);
-arrayList.Add(11);
-arrayList.Add(5);*/
-
-
-/*chainList.Add(0);
-chainList.Add(3);
-chainList.Add(991);
-chainList.Add(37);
-chainList.Add(4);
-
-chainList.Sort();
-chainList.Print();*/
-
-/*arrayList.Add("Turing");
-arrayList.Add("Elon");
-arrayList.Add("Bill");
-arrayList.Add("Mark");
-arrayList.Add("Steve");*/
-
-//arrayList.Sort();
-
-//arrayList2.Print();
-
-//arrayList3 = arrayList + arrayList2;
-
-//Console.WriteLine(arrayList != arrayList2);
-
-//arrayList3.Print();
-
-public abstract class BaseList<T> where T : IComparable
+public class TestBaseList
 {
-    protected int count = 0;
-    public int Count
+    public static int CountErrorArrayList { get; set; }
+    public static int CountErrorChainList { get; set; }
+    public static void Main()
     {
-        get { return count; }
-    }//дописать
-    public abstract void Add(T a);
-    public abstract void Delete(int pos);
-    public abstract void Insert(int pos, T a);
-    public abstract void Clear();
-    public abstract int Lenght();
-    public abstract T this[int i]
-    { set; get; }
-    public abstract void Print();
-    public void Assign(BaseList<T> sourceList)//A.Assign(B) => A превращается в В
+        BaseList<int> arrayList = new ArrayList<int>();
+        BaseList<int> chainList = new ChainList<int>();
+
+        BaseList<int> arrayList2 = new ArrayList<int>();
+        BaseList<int> chainList2 = new ChainList<int>();
+        /*Filling(arrayList, linkedList);
+        Console.WriteLine($"Количество исключений ArrayList: {CountErrorArrayList}");
+        Console.WriteLine($"Количество исключений LinkedList: {CountErrorLinkedList}");
+
+        arrayList.Print();
+        Console.Write('\n');
+        linkedList.Print();
+        Console.WriteLine($"linkedList.GetCount =  {linkedList.GetCount}");
+        Console.WriteLine($"arrayList.GetCount =  {arrayList.GetCount}");*/
+
+        // заполняем массив и список и проверяем метод Assign
+        Console.WriteLine("Assign");
+        Filling(arrayList, chainList);
+        arrayList.Assign(chainList);
+        chainList.Assign(arrayList);
+        Console.WriteLine($"Количество исключений ArrayList: {CountErrorArrayList}");
+        Console.WriteLine($"Количество исключений LinkedList: {CountErrorChainList}");
+        Console.WriteLine($"linkedList.GetCount =  {chainList.GetCount}");
+        Console.WriteLine($"arrayList.GetCount =  {arrayList.GetCount}");
+        arrayList.Print();
+        Console.Write('\n');
+        chainList.Print();
+        CountErrorArrayList = 0;
+        CountErrorChainList = 0;
+
+        // заполняем массив и список и проверяем метод AssignTo
+        Console.WriteLine("AssignTo");
+        arrayList.Clear();
+        chainList.Clear();
+        Filling(arrayList, chainList);
+        arrayList.AssignTo(chainList);
+        chainList.AssignTo(arrayList);
+        Console.WriteLine($"Количество исключений ArrayList: {CountErrorArrayList}");
+        Console.WriteLine($"Количество исключений ChainList: {CountErrorChainList}");
+        Console.WriteLine($"chainList.GetCount =  {chainList.GetCount}");
+        Console.WriteLine($"arrayList.GetCount =  {arrayList.GetCount}");
+        arrayList.Print();
+        Console.Write('\n');
+        chainList.Print();
+        CountErrorArrayList = 0;
+        CountErrorChainList = 0;
+
+        // заполняем массив и список и проверяем метод Clone
+        Console.WriteLine("Clone");
+        arrayList.Clear();
+        chainList.Clear();
+        Filling(arrayList, chainList);
+        chainList2 = arrayList.Clone();
+        arrayList2 = chainList.Clone();
+        Console.WriteLine($"Количество исключений ArrayList: {CountErrorArrayList}");
+        Console.WriteLine($"Количество исключений ChainList: {CountErrorChainList}");
+        Console.WriteLine($"chainList.GetCount =  {chainList.GetCount}");
+        Console.WriteLine($"arrayList.GetCount =  {arrayList.GetCount}");
+        arrayList.Print();
+        Console.Write('\n');
+        chainList.Print();
+        CountErrorArrayList = 0;
+        CountErrorChainList = 0;
+
+        Console.WriteLine("\nВторые листы, проверка сложения");
+
+        arrayList2 = arrayList - chainList;
+        chainList2 = chainList + arrayList;
+        Console.WriteLine($"Сравнение с помощью ==: {arrayList2 == chainList2}");
+        Console.WriteLine($"Сравнение с помощью !=: {arrayList2 != chainList2}");
+
+        arrayList2.Print();
+        chainList2.Print();
+
+        Console.WriteLine("Программа завершена!");
+        Console.WriteLine($"chainList.GetCount =  {chainList.GetCount}");
+        Console.WriteLine($"arrayList.GetCount =  {arrayList.GetCount}");
+    }
+
+
+    static void Filling(BaseList<int> arrayList, BaseList<int> chainList)
     {
-        Clear();
-        for (int i = 0; i < sourceList.Count; i++)
+        Random rnd = new Random();
+        for (int i = 0; i < 100; i++)
         {
-            Add(sourceList[i]);
-        }
-    }
-    public void AssignTo(BaseList<T> destList)//A.Assign(B) => B превращается в A
-    {
-        destList.Assign(this);
-    }
-    public abstract BaseList<T> Clone();
-    public virtual void Sort()
-    {
-        for (int current = 0; current < count - 1; current++)
-        {
-            int minIndex = current;
+            int choose = rnd.Next(0, 5);
+            int data = rnd.Next(0, 100);
+            int index = rnd.Next(0, 100);
 
-            for (int i = current + 1; i < count; i++)
-                if (this[minIndex].CompareTo(this[i]) == 1)
-                    minIndex = i;
+            /*arrayList.Print();
+            linkedList.Print();
+            Console.WriteLine($"нач chainList.GetCount =  {chainList.GetCount}");
+            Console.WriteLine($"нач arrayList.GetCount =  {arrayList.GetCount}");*/
 
 
-
-            T buf = this[current];
-            this[current] = this[minIndex];
-            this[minIndex] = buf;
-        }
-    }
-    public bool EqualsTo(BaseList<T> otherList)
-    {
-        if (this.Count != otherList.Count)
-            return false;
-        for (int i = 0; i < otherList.Count; i++)
-            if (this[i].CompareTo(otherList[i]) != 0)
-                return false;
-
-        return true;
-    }
-    public void CheckIndex(int index, int flag = 0)
-    {
-        // для случаев, когда вызывается не метод Insert(int index, int data)
-        if (flag != 1 && (index >= count || count == 0)) throw new EWrongIndex("Индекс вне диапазона");
-
-        // для случаев, когда вызываается метод Insert(int index, int data)
-        if (flag == 1 && index > count) throw new EWrongIndex("Индекс вне диапазона");
-    }
-    public int GetCount { get { return count; } } // количество элементов
-    public static BaseList<T> operator +(BaseList<T> list1, BaseList<T> list2)
-    {
-        BaseList<T> newList = list1.Clone(); // а может проблема в Assign? Возможно следует убрать Clear()?
-                                             // просто почему мы не можем применить Clone() и с помощью Asssing(BaseList sourceList) дописать недостающие элементы?
-        for (int i = 0; i < list2.GetCount; i++)
-        {
-            newList.Add(list2[i]);
-        }
-        return newList;
-    }
-
-    public static BaseList<T> operator -(BaseList<T> list1, BaseList<T> list2)
-    {
-        BaseList<T> newList = list1.Clone();
-        newList.Clear();
-                                             
-        for (int i = 0; i < list2.GetCount; i++)
-        {
-            int count = 0;
-            for(int j = 0; j < list2.GetCount; j++)
+            switch (choose)
             {
-                if (list1[i].CompareTo(list2[j]) == 0)
-                {
-                    count++;
+                case 0:
+                    try
+                    {
+                        arrayList.Add(data);
+
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorArrayList++;
+                    }
                     break;
-                }
+                case 1:
+                    try
+                    {
+                        arrayList.Insert(index, data);
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorArrayList++;
+                    }
+                    break;
+                case 2:
+                    try
+                    {
+                        arrayList.Delete(index);
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorArrayList++;
+                    }
+                    break;
+                case 13:
+                    try
+                    {
+                        arrayList.Clear();
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorArrayList++;
+                    }
+                    break;
+                case 14:
+                    try
+                    {
+                        arrayList.Sort();
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorArrayList++;
+                    }
+                    break;
             }
-            if (count == 0)
-                newList.Add(list1[i]);
+
+            switch (choose)
+            {
+                case 0:
+                    try
+                    {
+                        chainList.Add(data);
+
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorChainList++;
+                    }
+                    break;
+                case 1:
+                    try
+                    {
+                        chainList.Insert(index, data);
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorChainList++;
+                    }
+                    break;
+                case 2:
+                    try
+                    {
+                        chainList.Delete(index);
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorChainList++;
+                    }
+                    break;
+                case 13:
+                    try
+                    {
+                        chainList.Clear();
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorChainList++;
+                    }
+                    break;
+                case 14:
+                    try
+                    {
+                        chainList.Sort();
+                    }
+                    catch (EWrongIndex ex)
+                    {
+                        //Console.WriteLine($"{ex.Message}");
+                        CountErrorChainList++;
+                    }
+                    break;
+            }
+            if (!CheckElements(arrayList, chainList))
+            {
+                Console.WriteLine("LinkedList");
+                Console.WriteLine($"\nchoose = {choose}");
+                Console.WriteLine($"index = {index}");
+                Console.WriteLine($"data = {data}");
+
+                arrayList.Print();
+                chainList.Print();
+                break;
+            }
         }
-        return newList;
     }
 
-    public static bool operator ==(BaseList<T> list1, BaseList<T> list2)
+    static bool CheckElements(BaseList<int> arrayList, BaseList<int> chainList)
     {
-        if (list1.EqualsTo(list2))
-            return true;
-        return false;
-    }
-
-    public static bool operator !=(BaseList<T> list1, BaseList<T> list2)
-    {
-        if (list1.EqualsTo(list2))
+        if (chainList.GetCount != arrayList.GetCount)
             return false;
+        for (int i = 0; i < chainList.GetCount; i++)
+        {
+            //Console.WriteLine(i);
+            if (arrayList[i].CompareTo(chainList[i]) == -1)
+            {
+                Console.WriteLine($"{i} Element!!!!!");
+                Console.WriteLine($"arrayList = {arrayList[i]}");
+                Console.WriteLine($"linkedList = {chainList[i]}");
+                return false;
+            }
+        }
         return true;
     }
 }
